@@ -32,7 +32,7 @@ void PowerSaver::turnOffSPI()
   DDRB &= ~((1<<DDB5) | (1<<DDB4) | (1<<DDB3) | (1<<DDB2) | (1<<DDB1));  // set SPI pins (13, 12, 11, 10, 9) to INPUT
   SPCR = 0;  // reset SPI control register
 }
-	
+
   //****************************************************************
 	  	
 void PowerSaver::turnOnSPI()
@@ -42,7 +42,71 @@ void PowerSaver::turnOnSPI()
 }
 		  
   //****************************************************************
+	
+void PowerSaver::turnOffGPIO()
+{
+  MCUCR |= (1<<4); // disable PullUps (global)
+  DDRB = 0;		// Setting pins to INPUT 
+  DDRC = 0;		// Setting pins to INPUT 
+  DDRD = 0;		// Setting pins to INPUT 
+  PORTC = 0;		// Setting all analog pins to LOW (disable internal pull-ups)
+}
 
+  //****************************************************************
+  
+void PowerSaver::turnOffDigitalInput()
+{
+  DIDR0 = B00111111;
+  DIDR1 = B00000011;
+ /*
+(Data Input Disable Register) disconnects the digital inputs from which ever ADC channels you are using. This is important for 2 reasons. First off, an analog input will be floating all over the place, and causing the digital input to constantly toggle high and low. This creates excessive noise near the ADC, and burns extra power. Secondly, the digital input and associated DIDR switch have a capacitance associated with them which will slow down your input signal if you’re sampling a highly resistive load.
+*/	 
+}
+
+  //****************************************************************
+	
+void PowerSaver::turnOffTWI()
+{
+  PRR |= (1<<7); // disable TWI
+}
+
+  //****************************************************************
+
+void PowerSaver::turnOffTimer()
+{
+  PRR |= ((1<<5) | (1<<3) | (1<<6)); // disable TIM0, 1, 2
+}
+
+  //****************************************************************
+
+void PowerSaver::turnOffTimer0()
+{
+  PRR |= ((1<<5)); // disable TIM0
+}
+
+  //****************************************************************
+
+void PowerSaver::turnOffTimer1()
+{
+  PRR |= ((1<<3)); // disable TIM1
+}
+
+  //****************************************************************
+
+void PowerSaver::turnOffTimer2()
+{
+  PRR |= ((1<<6)); // disable TIM2
+}
+
+  //****************************************************************
+
+  void PowerSaver::turnOffUART()
+{
+  PRR |= (1<<1); // disable UART0
+}
+  
+  //****************************************************************
+  
 void PowerSaver::turnOffADC()
 {
   d1 = DDRC;	// save direction of analog pins

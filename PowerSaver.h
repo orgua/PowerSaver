@@ -9,7 +9,15 @@ class PowerSaver
     PowerSaver();
     void sleepInterruptSetup();
     void turnOffSPI();
-    void turnOnSPI();
+		void turnOnSPI();	
+	void turnOffGPIO();
+	void turnOffDigitalInput();
+	void turnOffTWI();
+	void turnOffTimer();
+	void turnOffTimer0();
+	void turnOffTimer1();
+	void turnOffTimer2();
+	void turnOffUART();
     void turnOffADC();
 		void turnOnADC();
     void turnOffBOD();
